@@ -3,6 +3,7 @@
 #include "interface/cli/menu/menu_item.hpp"
 
 #include <iostream>
+#include <limits>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ void AdminCLI::createDoc()
     wcin >> date;
 
     m_createDocumentFeature.execute(date);
-    wcout << "Документ створений\n";
+    wcout << L"Документ створений\n";
 }
 
 void AdminCLI::readDoc()
@@ -53,9 +54,9 @@ void AdminCLI::updateDoc()
     wcin >> date;
 
     if (m_updateDocumentFeature.execute(id, date) == 0)
-        wcout << "Дані оновлено\n";
+        wcout << L"Дані оновлено\n";
     else   
-        wcout << "Дані не оновлено. Документа не існує\n";
+        wcout << L"Дані не оновлено. Документа не існує\n";
     
 }
 
@@ -110,6 +111,7 @@ void AdminCLI::action()
     do {
         displayMenu();
         wcin >> choice;
+        wcin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         switch (choice) {
             case 1: {
                 createDoc();
@@ -127,7 +129,20 @@ void AdminCLI::action()
                 deleteDoc();
                 break;
             }
+            case 5: {
+                continue;
+            }
+            case 11: {
+                m_createDocumentFeature.execute(L"2022-07-15");
+                m_createDocumentFeature.execute(L"2020-03-27");
+                m_createDocumentFeature.execute(L"2024-11-05");
+                m_createDocumentFeature.execute(L"2021-01-19");
+                break;
+            }
         }
+        wcout << L"Enter щоб продовжити\n";
+        std::wcin.get();
+
     } while (choice != 5);
     
 }
