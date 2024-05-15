@@ -18,6 +18,7 @@ public:
     void updateDocument(int id, const Document& document) override;
     void deleteDocument(int id) override;
 
+    int getLenght() override;
 private:
     string fileName;
 };

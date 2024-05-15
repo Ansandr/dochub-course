@@ -13,9 +13,11 @@ public:
 
     void execute(const Document& doc);
 
+    void setLastId(int id);
+
 private:
     DocumentRepository& m_documentRepository;
-    int m_lastId = 0;
+    int m_lastId;
 };
 
 class ReadDocumentFeature {

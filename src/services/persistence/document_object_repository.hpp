@@ -6,6 +6,8 @@
 
 class DocumentObjectRepository : public DocumentRepository {
 public:
+    int getLenght() override;
+
     void createDocument(const Document& document) override;
     Document* readDocument(int id) override;
     void updateDocument(int id, const Document& document) override;

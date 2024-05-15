@@ -9,4 +9,6 @@ public:
     virtual Document* readDocument(int id) = 0;
     virtual void updateDocument(int id, const Document& document) = 0;
     virtual void deleteDocument(int id) = 0;
+
+    virtual int getLenght() = 0;
 };

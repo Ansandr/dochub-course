@@ -1,4 +1,7 @@
 #include "services/persistence/document_file_repository.hpp"
+#include "document_file_repository.hpp"
+
+#include <vector>
 
 DocumentFileRepository::DocumentFileRepository(const std::string &fileName)
 : fileName(fileName)
@@ -115,4 +118,16 @@ void DocumentFileRepository::deleteDocument(int id) {
             rename("temp.txt", fileName.c_str());
         }
     }
+}
+
+int DocumentFileRepository::getLenght()
+{
+    int number_of_lines = 0;
+    wifstream file(fileName);
+    if (file.is_open()) {
+        wstring line;
+        while (getline(file, line))
+            ++number_of_lines;
+    }
+    return number_of_lines;
 }
