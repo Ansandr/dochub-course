@@ -4,6 +4,7 @@
 #include "services/persistence/document_file_repository.hpp"
 
 #include <iostream>
+#include <io.h>
 #include <fcntl.h>
 
 using namespace std;
@@ -14,6 +15,8 @@ int main()
     _setmode(_fileno(stdin),  _O_U16TEXT);
     _setmode(_fileno(stderr), _O_U16TEXT);
 
+    wcout << L"СТАРТ\n";
+
     //DocumentObjectRepository documentRepository;
     DocumentFileRepository documentRepository("documents.txt");
 
@@ -23,7 +26,7 @@ int main()
     UpdateDocumentFeature updateDocumentFeature(documentRepository);
     DeleteDocumentFeature deleteDocumentFeature(documentRepository);
 
-    wcout << L"СТАРТ\n";
+   
     CommandLineInterface* cli = new AdminCLI(
         createDocumentFeature, 
         readDocumentFeature, 

@@ -11,6 +11,8 @@ public:
 
     void execute(const std::wstring& date);
 
+    void execute(const Document& doc);
+
 private:
     DocumentRepository& m_documentRepository;
     int m_lastId = 0;

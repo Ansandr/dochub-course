@@ -12,12 +12,16 @@ public:
     Document();
     Document(int id, const wstring& date);
 
+
     int getId() const;
 
     void setDateString(const wstring date);
 
     wstring getDateString() const;
     time_t getDateTime() const;
+
+    Document& operator=(const Document& obj);
+
 
     friend wostream& operator<<(wostream& os, const Document& doc);
 

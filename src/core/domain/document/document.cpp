@@ -32,8 +32,16 @@ time_t Document::getDateTime() const
     return NULL; //TODO
 }
 
+Document &Document::operator=(const Document &obj)
+{
+    if (this != &obj) {
+        id = obj.id;
+        date = obj.date;
+    }
+}
+
 wostream &operator<<(wostream &os, const Document &doc)
 {
-    os << doc.getId() << "\t" << doc.getDateString();
+    os << "\t" << doc.getDateString();
     return os;
 }
