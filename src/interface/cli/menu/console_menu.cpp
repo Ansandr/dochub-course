@@ -17,10 +17,6 @@ static void print_horizontals()
     wcout << '+' << setw(width) << '+' << endl;
 }
 
-void func() {
-
-}
-
 ConsoleMenu::ConsoleMenu(wstring title, wstring subtitle) {
     this->title = title;
     this->subtitle = subtitle;
@@ -52,4 +48,8 @@ void ConsoleMenu::show() {
 
 void ConsoleMenu::addItem(MenuItem item) {
     m_items.push_back(item);
+}
+
+MenuItem ConsoleMenu::getItem(int id) {
+    return m_items.at(id);
 }

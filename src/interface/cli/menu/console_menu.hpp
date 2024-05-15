@@ -13,6 +13,7 @@ public:
 
     void show();
     void addItem(MenuItem item);
+    MenuItem getItem(int id);
 
 private:
     vector<MenuItem> m_items;

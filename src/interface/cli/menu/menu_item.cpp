@@ -1,6 +1,7 @@
 #include "interface/cli/menu/menu_item.hpp"
 
 #include <iostream>
+#include "menu_item.hpp"
 
 
 MenuItem::MenuItem(wstring text) {

@@ -1,4 +1,5 @@
 #include "services/persistence/document_file_repository.hpp"
+#include <vector>
 
 DocumentFileRepository::DocumentFileRepository(const std::string &fileName)
 : fileName(fileName)
