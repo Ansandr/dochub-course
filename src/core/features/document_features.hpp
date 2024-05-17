@@ -35,6 +35,7 @@ public:
     UpdateDocumentFeature(DocumentRepository& documentRepository);
 
     int execute(int id, wstring date);
+    int execute(Document doc);
 
 private:
     DocumentRepository& m_documentRepository;

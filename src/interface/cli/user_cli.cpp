@@ -42,7 +42,18 @@ void UserCLI::action()
                 break;
             }
             case 2: {
-                // change
+                Document doc { m_readDocumentFeature.execute(userId) };
+
+                wstring pin;
+
+                wcout << L"Введіть новий пін: \n";
+                wcin >> pin;
+
+                doc.setPin(pin);
+
+                m_updateDocumentFeature.execute(doc);
+
+                wcout << L"Дані оновлено: \n";
                 break;
             }
         }

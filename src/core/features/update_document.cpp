@@ -13,3 +13,9 @@ int UpdateDocumentFeature::execute(int id, wstring date) {
     }
     return 1;
 }
+
+int UpdateDocumentFeature::execute(Document doc)
+{
+    m_documentRepository.updateDocument(doc.getId(), doc);
+    return 0;
+}
