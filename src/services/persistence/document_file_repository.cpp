@@ -25,9 +25,12 @@ Document *DocumentFileRepository::readDocument(int id) {
     if (inFile.is_open()) {
         wstring line;
         while (getline(inFile, line)) {
-            inFile >> cid;
-            inFile >> date;
-            inFile >> pin;
+
+            wistringstream ss(line);
+
+            ss >> cid;
+            ss >> date;
+            ss >> pin;
 
             if(cid == id) {
                 Document* doc = new Document(cid, date, pin);
