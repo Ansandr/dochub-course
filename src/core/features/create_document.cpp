@@ -7,12 +7,12 @@ CreateDocumentFeature::CreateDocumentFeature(DocumentRepository& documentReposit
     }
 
 
-void CreateDocumentFeature::execute(const std::wstring& date) {
-    Document document(m_lastId++, date);
+void CreateDocumentFeature::execute(const std::wstring& date, const wstring& pin) {
+    Document document(m_lastId++, date, pin);
     m_documentRepository.createDocument(document);
 }
 
-void CreateDocumentFeature::execute(const Document& doc) {
+void CreateDocumentFeature::execute(Document& doc) {
     m_documentRepository.createDocument(doc);
 }
 

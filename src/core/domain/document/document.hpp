@@ -11,23 +11,28 @@ class Document {
 public:
     Document();
     Document(int id, const wstring& date);
+    Document(int id, const wstring& date, wstring pin);
 
 
     int getId() const;
+    wstring getPin() const;
+    void setPin(const wstring& newPin);
+    void setId(const int newId);
 
     void setDateString(const wstring date);
 
     wstring getDateString() const;
     time_t getDateTime() const;
 
+    void printInfo() const;
+
     Document& operator=(const Document& obj);
 
-
-    friend wostream& operator<<(wostream& os, const Document& doc);
-
+    friend wostream& operator<< (wostream& os, const Document& doc);
 
 private:
     // auto increment
     int id;
     wstring date;
+    wstring pin;
 };

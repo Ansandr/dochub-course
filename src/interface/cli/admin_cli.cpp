@@ -4,17 +4,42 @@
 
 #include <iostream>
 #include <limits>
+#include <sstream>
 
 using namespace std;
 
 void AdminCLI::createDoc()
 {   
     wstring date;
-
+    
     wcout << L"Введіть дату: (YYYY-MM-dd) \n";
     wcin >> date;
 
-    m_createDocumentFeature.execute(date);
+    // перевірка введення
+    wistringstream ss(date);
+    int year;
+    int month;
+    int day;
+    wchar_t d;
+    
+    if (ss >> year >> d >> month >> d >> day)
+    {
+        if (year < 0 || month < 1 || month > 12 || day < 1 || day > 31) {
+            wcout << L"Неправильний ввід дати\n";
+            return;
+        } 
+    }
+
+    wstring pin;
+    wcout << L"Створіть пін: (Не менше 4х чисел) \n";
+    wcin >> pin;
+
+    // перевірка введення
+    if (pin.length() < 4) {
+        wcout << L"Код має містити від 4 символів\n";
+        return;
+    }
+    m_createDocumentFeature.execute(date, pin);
     wcout << L"Документ створений\n";
 }
 
@@ -32,9 +57,7 @@ void AdminCLI::readDoc()
         return;
     }
     
-    wcout << "Document:\n";
-    wcout << "id: " << doc.getId() << "\n";
-    wcout << "date: " << doc.getDateString() << "\n";
+    doc.printInfo();
 }
 
 void AdminCLI::updateDoc()
@@ -111,7 +134,6 @@ void AdminCLI::action()
     do {
         displayMenu();
         wcin >> choice;
-        wcin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         switch (choice) {
             case 1: {
                 createDoc();
@@ -133,13 +155,14 @@ void AdminCLI::action()
                 continue;
             }
             case 11: {
-                m_createDocumentFeature.execute(L"2022-07-15");
-                m_createDocumentFeature.execute(L"2020-03-27");
-                m_createDocumentFeature.execute(L"2024-11-05");
-                m_createDocumentFeature.execute(L"2021-01-19");
+                m_createDocumentFeature.execute(L"2022-07-15", L"1234");
+                m_createDocumentFeature.execute(L"2020-03-27", L"4312");
+                m_createDocumentFeature.execute(L"2024-11-05", L"9645");
+                m_createDocumentFeature.execute(L"2021-01-19", L"5555");
                 break;
             }
         }
+        
         wcout << L"Enter щоб продовжити\n";
         std::wcin.get();
 

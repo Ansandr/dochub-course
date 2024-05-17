@@ -9,12 +9,12 @@ class CreateDocumentFeature {
 public:
     CreateDocumentFeature(DocumentRepository& documentRepository);
 
-    void execute(const std::wstring& date);
+    void execute(const std::wstring& date, const std::wstring& pin);
 
-    void execute(const Document& doc);
+    void execute(Document& doc);
 
     void setLastId(int id);
-
+    
 private:
     DocumentRepository& m_documentRepository;
     int m_lastId;

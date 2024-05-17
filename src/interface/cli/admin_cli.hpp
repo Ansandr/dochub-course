@@ -5,10 +5,11 @@
 
 class AdminCLI : public CommandLineInterface {
 public:
-    AdminCLI(CreateDocumentFeature& createDocumentFeature,
-            ReadDocumentFeature& readDocumentFeature,
-            UpdateDocumentFeature& updateDocumentFeature,
-            DeleteDocumentFeature& deleteDocumentFeature);
+    AdminCLI(
+        CreateDocumentFeature& createDocumentFeature,
+        ReadDocumentFeature& readDocumentFeature,
+        UpdateDocumentFeature& updateDocumentFeature,
+        DeleteDocumentFeature& deleteDocumentFeature);
 
     void displayMenu() override;
     void action() override;

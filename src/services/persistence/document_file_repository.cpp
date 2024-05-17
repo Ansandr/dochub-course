@@ -19,6 +19,7 @@ void DocumentFileRepository::createDocument(const Document &document) {
 Document *DocumentFileRepository::readDocument(int id) {
     int cid;
     wstring date;
+    wstring pin;
 
     wifstream inFile(fileName);
     if (inFile.is_open()) {
@@ -26,9 +27,10 @@ Document *DocumentFileRepository::readDocument(int id) {
         while (getline(inFile, line)) {
             inFile >> cid;
             inFile >> date;
+            inFile >> pin;
 
             if(cid == id) {
-                Document* doc = new Document(cid, date);
+                Document* doc = new Document(cid, date, pin);
                 inFile.close();
                 return doc;
             }
@@ -122,12 +124,33 @@ void DocumentFileRepository::deleteDocument(int id) {
 
 int DocumentFileRepository::getLenght()
 {
-    int number_of_lines = 0;
-    wifstream file(fileName);
+    int lastId = 0;
+    wfstream file(fileName);
     if (file.is_open()) {
-        wstring line;
-        while (getline(file, line))
-            ++number_of_lines;
+        file.seekg(-1, std::ios_base::end);
+        bool keepLooping = true;
+        while(keepLooping) {
+            wchar_t ch;
+            file.get(ch);                            // Get current byte's data
+
+            if((int)file.tellg() <= 1) {             // If the data was at or before the 0th byte
+                file.seekg(0);                       // The first line is the last line
+                keepLooping = false;                // So stop there
+            }
+            else if(ch == '\n') {                   // If the data was a newline
+                keepLooping = false;                // Stop at the current position.
+            }
+            else {                                  // If the data was neither a newline nor at the 0 byte
+                file.seekg(-2,ios_base::cur);        // Move to the front of that data, then to the front of the data before it
+            }
+        }
+        
+        wstring lastLine;
+        getline(file, lastLine);
+        int lastId;
+        wstringstream ss(lastLine);
+        ss >> lastId;
+        file.close();
     }
-    return number_of_lines;
+    return lastId;
 }
