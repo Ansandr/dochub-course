@@ -41,7 +41,8 @@ void AdminCLI::createDoc()
         wcout << L"Код має містити від 4 символів\n";
         return;
     }
-    m_documentService.getCreateFeature().execute(date, pin);
+    Document doc = Document(-1, date, pin);
+    m_documentService.create(doc);
     wcout << L"Документ створений\n";
 }
 
@@ -52,7 +53,7 @@ void AdminCLI::readDoc()
     wcout << L"Введіть номер документа: \n";
     wcin >> id;
 
-    Document doc = m_documentService.getReadFeature().execute(id);
+    Document doc = m_documentService.read(id);
 
     if (doc.getId() == -1) {
         wcout << L"Документа не існує\n";
@@ -69,7 +70,7 @@ void AdminCLI::updateDoc()
     wcout << L"Введіть номер документа: \n";
     wcin >> id;
 
-    Document doc = m_documentService.getReadFeature().execute(id);
+    Document doc = m_documentService.read(id);
     if (doc.getId() == -1) {
         wcout << L"Документа не існує\n";
         return;
@@ -77,8 +78,9 @@ void AdminCLI::updateDoc()
 
     wcout << L"Введіть нову дату: \n";
     wcin >> date;
+    doc.setDateString(date);
 
-    if (m_documentService.getUpdateFeature().execute(id, date) == 0)
+    if (m_documentService.update(id, doc) == 0)
         wcout << L"Дані оновлено\n";
     else   
         wcout << L"Дані не оновлено. Документа не існує\n";
@@ -91,22 +93,20 @@ void AdminCLI::deleteDoc()
     wcout << L"Введіть номер документа: \n";
     wcin >> id;
 
-    Document doc = m_documentService.getReadFeature().execute(id);
+    Document doc = m_documentService.read(id);
     if (doc.getId() == -1) {
         wcout << L"Документа не існує\n";
         return;
     }
 
-    m_documentService.getDeleteFeature().execute(id);
+    m_documentService.remove(id);
     wcout << L"Документ видалено\n";
 }
 
 AdminCLI::AdminCLI(
-    DocumentService& documentService,
-    DocumentService& certificateService
-    ) : CommandLineInterface(),
-    m_documentService(documentService),
-    m_certificateService(certificateService)
+    DocumentService<Document>& documentService,
+    DocumentService<Certificate>& certificateService
+    ) : m_documentService(documentService), m_certificateService(certificateService)
 {}
 
 void AdminCLI::displayMenu()
@@ -153,15 +153,13 @@ void AdminCLI::action()
                 continue;
             }
             case 11: {
-                CreateDocumentFeature create = m_documentService.getCreateFeature();
-                create.execute(L"2022-07-15", L"1234");
-                create.execute(L"2020-03-27", L"4312");
-                create.execute(L"2024-11-05", L"9645");
-                create.execute(L"2021-01-19", L"5555");
+                m_documentService.create(Document(-1, L"2022-07-15", L"1234"));
+                m_documentService.create(Document(-1, L"2020-03-27", L"4312"));
+                m_documentService.create(Document(-1, L"2024-11-05", L"9645"));
+                m_documentService.create(Document(-1, L"2021-01-19", L"5555"));
 
-                CreateDocumentFeature createCert = m_certificateService.getCreateFeature();
                 Certificate* cert = new Certificate(0, 12, L"2027-06-30", L"Computer Engieneer");
-                createCert.execute(*cert);
+                m_certificateService.create(*cert);
                 break;
             }
         }

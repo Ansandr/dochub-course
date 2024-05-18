@@ -3,7 +3,8 @@
 #include "interface/cli/user_cli.hpp"
 #include "services/persistence/document_object_repository.hpp"
 #include "services/persistence/document_file_repository.hpp"
-#include "core/features/document_service.hpp"
+#include "core/domain/document/certificate.hpp"
+#include "core/domain/document/document.hpp"
 
 #include <iostream>
 #include <io.h>
@@ -26,8 +27,8 @@ int main()
     DocumentFileRepository documentRepository("documents.txt");
     DocumentFileRepository certificateRepository("certificates.txt");
 
-    DocumentService documentService(documentRepository);
-    DocumentService certificateService(certificateRepository);
+    DocumentService<Document> documentService(documentRepository);
+    DocumentService<Certificate> certificateService(certificateRepository);
 
     // Авторизація
     wcout << L"Авторизація\n";

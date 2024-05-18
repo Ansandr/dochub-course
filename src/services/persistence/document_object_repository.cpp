@@ -1,8 +1,9 @@
 #include "services/persistence/document_object_repository.hpp"
 #include "document_object_repository.hpp"
 
-void DocumentObjectRepository::createDocument(const Document& document) {
-
+void DocumentObjectRepository::createDocument(Document document)
+{
+    document.setId(m_documents.size());
     m_documents.push_back(document);
 }
 

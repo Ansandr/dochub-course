@@ -13,7 +13,7 @@ class DocumentFileRepository : public DocumentRepository {
 public:
     DocumentFileRepository(const string& fileName);
 
-    void createDocument(const Document& document) override;
+    void createDocument(Document document) override;
     Document* readDocument(int id) override;
     void updateDocument(int id, const Document& document) override;
     void deleteDocument(int id) override;
@@ -21,4 +21,5 @@ public:
     int getLenght() override;
 private:
     string fileName;
+    int lastId;
 };

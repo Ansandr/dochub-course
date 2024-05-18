@@ -4,12 +4,13 @@
 
 #include <iostream>
 
+using namespace std;
+
 UserCLI::UserCLI(
-    DocumentService &documentService, 
-    DocumentService &certificateService, 
-    int userId) : CommandLineInterface(),
-        m_documentService(documentService),
-        m_certificateService(certificateService)
+    DocumentService<Document>& documentService,
+    DocumentService<Certificate>& certificateService,
+    int userId
+    ) : m_documentService(documentService), m_certificateService(certificateService)
 {
     this->userId = userId;
 }
@@ -37,14 +38,12 @@ void UserCLI::action()
         std::wcin.get();
         switch (choice) {
             case 1: {
-                ReadDocumentFeature read = m_documentService.getReadFeature();
-                Document doc { read.execute(userId) };
+                Document doc { m_documentService.read(userId) };
                 doc.printInfo();
                 break;
             }
             case 2: {
-                ReadDocumentFeature read = m_documentService.getReadFeature();
-                Document doc { read.execute(userId) };
+                Document doc { m_documentService.read(userId) };
 
                 wstring pin;
 
@@ -52,8 +51,7 @@ void UserCLI::action()
                 wcin >> pin;
 
                 doc.setPin(pin);
-                
-                m_documentService.getUpdateFeature().execute(doc);
+                m_documentService.update(userId, doc);
 
                 wcout << L"Дані оновлено: \n";
                 break;
