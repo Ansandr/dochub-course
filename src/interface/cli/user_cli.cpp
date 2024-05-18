@@ -43,6 +43,11 @@ void UserCLI::action()
                 break;
             }
             case 2: {
+                Certificate cert { m_certificateService.read(userId) };
+                cert.printInfo();
+                break;
+            }
+            case 3: {
                 Document doc { m_documentService.read(userId) };
 
                 wstring pin;

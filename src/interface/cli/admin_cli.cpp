@@ -12,6 +12,10 @@ using namespace std;
 
 void AdminCLI::createDoc()
 {   
+    wchar_t type;
+    wcout << L"Який документ створити? (d, c)\n";
+    wcin >> type;
+
     wstring date;
     
     wcout << L"Введіть дату: (YYYY-MM-dd) \n";
@@ -32,35 +36,76 @@ void AdminCLI::createDoc()
         } 
     }
 
-    wstring pin;
-    wcout << L"Створіть пін: (Не менше 4х чисел) \n";
-    wcin >> pin;
+    switch (type) {
+        case 'd': {
+            wstring pin;
+            wcout << L"Створіть пін: (Не менше 4х чисел) \n";
+            wcin >> pin;
 
-    // перевірка введення
-    if (pin.length() < 4) {
-        wcout << L"Код має містити від 4 символів\n";
-        return;
+            // перевірка введення
+            if (pin.length() < 4) {
+                wcout << L"Код має містити від 4 символів\n";
+                return;
+            }
+
+            Document doc = Document(-1, date, pin);
+            m_documentService.create(doc);
+            wcout << L"Документ створений\n";
+            break;
+        }
+        case 'c': {
+            int docId;
+            wstring spec;
+
+            wcout << L"До якого документа прив'язати: \n";
+            wcin >> docId;
+
+            wcout << L"Спеціалізація: \n";
+            wcin >> spec;
+
+            Certificate cert = Certificate(docId, -1, date, spec);
+            m_certificateService.create(cert);
+            wcout << L"Атестат створений\n";
+            break;
+        }
     }
-    Document doc = Document(-1, date, pin);
-    m_documentService.create(doc);
-    wcout << L"Документ створений\n";
 }
 
 void AdminCLI::readDoc()
 {
+    wchar_t type;
+    wcout << L"Який документ переглянути? (d, c)\n";
+    wcin >> type;
+
     int id;
 
     wcout << L"Введіть номер документа: \n";
     wcin >> id;
 
-    Document doc = m_documentService.read(id);
+    switch (type) {
+        case 'd': {
+            Document doc = m_documentService.read(id);
 
-    if (doc.getId() == -1) {
-        wcout << L"Документа не існує\n";
-        return;
-    }
+            if (doc.getId() == -1) {
+                wcout << L"Документа не існує\n";
+                return;
+            }
     
-    doc.printInfo();
+            doc.printInfo();
+            break;
+        }
+        case 'c': {
+            Certificate cert = m_certificateService.read(id);
+
+            if (cert.getId() == -1) {
+                wcout << L"Документа не існує\n";
+                return;
+            }
+    
+            cert.printInfo();
+            break;
+        }
+    }
 }
 
 void AdminCLI::updateDoc()
@@ -88,19 +133,41 @@ void AdminCLI::updateDoc()
 }
 
 void AdminCLI::deleteDoc()
-{   
-    int id;
+{  
+    int id; 
+    wchar_t type;
+    wcout << L"Який документ видалити? (d, c)\n";
+    wcin >> type;
+
     wcout << L"Введіть номер документа: \n";
     wcin >> id;
 
-    Document doc = m_documentService.read(id);
-    if (doc.getId() == -1) {
-        wcout << L"Документа не існує\n";
-        return;
-    }
+    switch (type) {
+        case 'd': {
+            Document doc = m_documentService.read(id);
 
-    m_documentService.remove(id);
-    wcout << L"Документ видалено\n";
+            if (doc.getId() == -1) {
+                wcout << L"Документа не існує\n";
+                return;
+            }
+    
+            m_documentService.remove(id);
+            wcout << L"Документ видалено\n";
+            break;
+        }
+        case 'c': {
+            Certificate cert = m_certificateService.read(id);
+
+            if (cert.getId() == -1) {
+                wcout << L"Документа не існує\n";
+                return;
+            }
+    
+            m_certificateService.remove(id);
+            wcout << L"Сертифікат видалено\n";
+            break;
+        }
+    }
 }
 
 AdminCLI::AdminCLI(
