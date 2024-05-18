@@ -11,8 +11,8 @@ public:
 
     void execute(const std::wstring& date, const std::wstring& pin);
 
-    void execute(Document& doc);
-
+    void execute(const Document& doc);
+    
     void setLastId(int id);
     
 private:
@@ -26,6 +26,11 @@ public:
 
     Document execute(int id);
 
+    ReadDocumentFeature& operator= (const ReadDocumentFeature& x)
+    {
+        return *this;
+    }
+
 private:
     DocumentRepository& m_documentRepository;
 };
@@ -37,6 +42,11 @@ public:
     int execute(int id, wstring date);
     int execute(Document doc);
 
+    UpdateDocumentFeature& operator= (const UpdateDocumentFeature& x)
+    {
+        return *this;
+    }
+
 private:
     DocumentRepository& m_documentRepository;
 };
@@ -45,6 +55,11 @@ class DeleteDocumentFeature {
 public:
     DeleteDocumentFeature(DocumentRepository& documentRepository);
     void execute(int id);
+
+    DeleteDocumentFeature& operator= (const DeleteDocumentFeature& x)
+    {
+        return *this;
+    }
 
 private:
     DocumentRepository& m_documentRepository;

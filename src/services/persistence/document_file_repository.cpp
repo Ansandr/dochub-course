@@ -7,10 +7,10 @@ DocumentFileRepository::DocumentFileRepository(const std::string &fileName)
 : fileName(fileName)
 {}
 
-void DocumentFileRepository::createDocument(const Document &document) {
+void DocumentFileRepository::createDocument(const Document& document) {
     wofstream outFile(fileName, ios_base::app);
     if (outFile.is_open()) {
-        outFile << document.getId() << "\t" << document << "\n"; //id document
+        outFile << document.getId() << "\t" << document.writeRow() << "\n"; //id document
         outFile.close();
         wcout << L"Документ збережений\n";
     }

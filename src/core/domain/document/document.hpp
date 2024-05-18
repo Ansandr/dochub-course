@@ -28,9 +28,11 @@ public:
 
     Document& operator=(const Document& obj);
 
+    virtual wstring writeRow() const;
+
     friend wostream& operator<< (wostream& os, const Document& doc);
 
-private:
+protected:
     // auto increment
     int id;
     wstring date;

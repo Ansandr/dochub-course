@@ -3,6 +3,7 @@
 #include "interface/cli/user_cli.hpp"
 #include "services/persistence/document_object_repository.hpp"
 #include "services/persistence/document_file_repository.hpp"
+#include "core/features/document_service.hpp"
 
 #include <iostream>
 #include <io.h>
@@ -23,12 +24,10 @@ int main()
 
     //DocumentObjectRepository documentRepository;
     DocumentFileRepository documentRepository("documents.txt");
+    DocumentFileRepository certificateRepository("certificates.txt");
 
-
-    CreateDocumentFeature createDocumentFeature(documentRepository);
-    ReadDocumentFeature readDocumentFeature(documentRepository);
-    UpdateDocumentFeature updateDocumentFeature(documentRepository);
-    DeleteDocumentFeature deleteDocumentFeature(documentRepository);
+    DocumentService documentService(documentRepository);
+    DocumentService certificateService(certificateRepository);
 
     // Авторизація
     wcout << L"Авторизація\n";
@@ -45,10 +44,8 @@ int main()
         {
             if (handleAdminLogin()) {
                 cli = new AdminCLI(
-                    createDocumentFeature,
-                    readDocumentFeature, 
-                    updateDocumentFeature,
-                    deleteDocumentFeature
+                    documentService,
+                    certificateService
                 );
                 break;
             }
@@ -63,8 +60,8 @@ int main()
             if (document) {
                 if (handleUserLogin(*document)) {
                 cli = new UserCLI(
-                            readDocumentFeature, 
-                            updateDocumentFeature,
+                            documentService,
+                            certificateService,
                             userId
                         );
                 break;

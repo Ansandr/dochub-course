@@ -62,6 +62,15 @@ Document &Document::operator=(const Document &obj)
         id = obj.id;
         date = obj.date;
     }
+
+    return *this;
+}
+
+wstring Document::writeRow() const
+{
+    wstringstream ss;
+    ss << "\t" << getDateString() << "\t" << getPin();
+    return ss.str();
 }
 
 wostream &operator<<(wostream &os, const Document &doc)

@@ -2,12 +2,13 @@
 
 #include "interface/cli/cli.hpp"
 #include "core/features/document_features.hpp"
+#include "core/features/document_service.hpp"
 
 class UserCLI : public CommandLineInterface {
 public:
     UserCLI(
-        ReadDocumentFeature& readDocumentFeature,
-        UpdateDocumentFeature& updateDocumentFeature,
+        DocumentService& documentService,
+        DocumentService& certificateService,
         int userId
     );
 
@@ -15,7 +16,8 @@ public:
     void action() override;
     
 private:
-    ReadDocumentFeature& m_readDocumentFeature;
-    UpdateDocumentFeature& m_updateDocumentFeature;
+    DocumentService& m_documentService;
+    DocumentService& m_certificateService;
+
     int userId;
 };

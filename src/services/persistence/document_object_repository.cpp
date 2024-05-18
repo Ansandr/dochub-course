@@ -1,7 +1,7 @@
 #include "services/persistence/document_object_repository.hpp"
 #include "document_object_repository.hpp"
 
-void DocumentObjectRepository::createDocument(const Document &document) {
+void DocumentObjectRepository::createDocument(const Document& document) {
 
     m_documents.push_back(document);
 }

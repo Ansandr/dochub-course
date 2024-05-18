@@ -2,23 +2,21 @@
 
 #include "interface/cli/cli.hpp"
 #include "core/features/document_features.hpp"
+#include "core/features/document_service.hpp"
 
 class AdminCLI : public CommandLineInterface {
 public:
     AdminCLI(
-        CreateDocumentFeature& createDocumentFeature,
-        ReadDocumentFeature& readDocumentFeature,
-        UpdateDocumentFeature& updateDocumentFeature,
-        DeleteDocumentFeature& deleteDocumentFeature);
+        DocumentService& documentService,
+        DocumentService& certificateService
+        );
 
     void displayMenu() override;
     void action() override;
     
 private:
-    CreateDocumentFeature& m_createDocumentFeature;
-    ReadDocumentFeature& m_readDocumentFeature;
-    UpdateDocumentFeature& m_updateDocumentFeature;
-    DeleteDocumentFeature& m_deleteDocumentFeature;
+    DocumentService& m_documentService;
+    DocumentService& m_certificateService;
 
     void createDoc();
     void readDoc();
