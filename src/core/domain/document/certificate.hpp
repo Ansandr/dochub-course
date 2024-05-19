@@ -15,6 +15,7 @@ public:
     wstring getSpecitifcation() const;
 
     void printInfo() const;
+    wstring toString() const;
 
     wstring writeRow() const override;
 

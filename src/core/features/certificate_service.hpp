@@ -10,7 +10,7 @@ public:
     void create(Certificate certificate);
     Certificate read(int id);
     Certificate getCertificateByDocId(int id);
-    void sign(int id, const Certificate& certificate);
+    void sign(const Certificate& certificate);
     int update(int id, const Certificate& certificate);
     void remove(int id);
 private:

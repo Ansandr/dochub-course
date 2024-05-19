@@ -1,6 +1,7 @@
 #include "core/domain/document/certificate.hpp"
 
 #include <iostream>
+#include "certificate.hpp"
 
 Certificate::Certificate() : Document()
 {
@@ -33,6 +34,15 @@ void Certificate::printInfo() const
     wcout << L"Номер: " << id << "\n";
 }
 
+wstring Certificate::toString() const
+{
+    wstringstream ss;
+    ss << L"Атестат:\n";
+    ss << L"Спеціальність: " << specification << "\n";
+    ss << L"Дата випуску: " << date << "\n";
+    ss << L"Номер: " << id << "\n";
+    return ss.str();
+}
 wstring Certificate::writeRow() const
 {
     wstringstream ss;

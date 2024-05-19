@@ -12,7 +12,7 @@ public:
     int update(int id, const Document& document);
     void remove(int id);
 
-    void sign(int id, const Document& document);
+    void sign(const Document& document);
 private:
     DocumentRepository& m_documentRepository;
 };

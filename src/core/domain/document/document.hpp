@@ -26,6 +26,8 @@ public:
 
 
     void printInfo() const;
+    
+    wstring toString() const;
 
     Document& operator=(const Document& obj);
 

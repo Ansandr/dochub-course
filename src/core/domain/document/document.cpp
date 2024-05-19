@@ -71,6 +71,17 @@ void Document::printInfo() const
     wcout << L"Номер: " << id << "\n";
 }
 
+wstring Document::toString() const
+{
+    wstringstream ss;
+    ss << L"Паспорт:\n";
+    ss << L"Ім'я: " << name << "\n";
+    ss << L"Дійсний до: " << date << "\n";
+    ss << L"Номер: " << id << "\n";
+    return ss.str();
+}
+
+
 Document &Document::operator=(const Document &obj)
 {
     if (this != &obj) {

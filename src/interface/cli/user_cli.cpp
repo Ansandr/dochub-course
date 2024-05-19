@@ -64,6 +64,17 @@ void UserCLI::action()
                 break;
             }
             case 3: {
+                Document doc { m_documentService.read(userId) };
+                wstring pin;
+
+                wcout << L"Enter pin: ";
+                wcin >> pin;
+
+                if (pin != doc.getPin()) {
+                    wcout << L"Неправильний пароль!\n";
+                    break;
+                }
+
                 wchar_t type;
                 wcout << L"Який тип документа створити? (d, c)\n";
                 wcin >> type;
@@ -71,19 +82,21 @@ void UserCLI::action()
                 switch (type) {
                     case 'd': {
                         Document doc { m_documentService.read(userId) };
-                        m_documentService.sign(userId, doc);
+                        m_documentService.sign(doc);
                         wcout << L"Документ підписано\n";
                         break;
                     }
                     case 'c': {
                         Certificate cert { m_certificateService.getCertificateByDocId(userId) };
-                        m_certificateService.sign(userId, cert);
+                        m_certificateService.sign(cert);
                         wcout << L"Сертифікат підписано\n";
                         break;
                     }
                 }
                 break;
             }
+            case 4:
+                continue;
         }
         
         wcout << L"Enter щоб продовжити\n";
