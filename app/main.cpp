@@ -1,10 +1,12 @@
 #include "interface/cli/cli.hpp"
 #include "interface/cli/admin_cli.hpp"
 #include "interface/cli/user_cli.hpp"
-#include "services/persistence/document_object_repository.hpp"
 #include "services/persistence/document_file_repository.hpp"
+#include "services/persistence/certificate_file_repository.hpp"
 #include "core/domain/document/certificate.hpp"
 #include "core/domain/document/document.hpp"
+#include "core/features/document_service.hpp"
+#include "core/features/certificate_service.hpp"
 
 #include <iostream>
 #include <io.h>
@@ -24,11 +26,11 @@ int main()
     wcout << L"СТАРТ\n";
 
     //DocumentObjectRepository documentRepository;
-    DocumentFileRepository documentRepository("documents.txt");
-    DocumentFileRepository certificateRepository("certificates.txt");
+    DocumentFileRepository documentRepository("documents.csv");
+    CertificateFileRepository certificateRepository("certificates.csv");
 
-    DocumentService<Document> documentService(documentRepository);
-    DocumentService<Certificate> certificateService(certificateRepository);
+    DocumentService documentService(documentRepository);
+    CertificateService certificateService(certificateRepository);
 
     // Авторизація
     wcout << L"Авторизація\n";

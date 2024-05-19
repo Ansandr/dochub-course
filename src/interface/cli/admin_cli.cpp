@@ -3,6 +3,8 @@
 #include "interface/cli/menu/menu_item.hpp"
 #include "core/domain/document/document.hpp"
 #include "core/domain/document/certificate.hpp"
+#include "core/features/document_service.hpp"
+#include "core/features/certificate_service.hpp"
 
 #include <iostream>
 #include <limits>
@@ -13,7 +15,7 @@ using namespace std;
 void AdminCLI::createDoc()
 {   
     wchar_t type;
-    wcout << L"Який документ створити? (d, c)\n";
+    wcout << L"Який тип документа створити? (d, c)\n";
     wcin >> type;
 
     wstring date;
@@ -38,9 +40,13 @@ void AdminCLI::createDoc()
 
     switch (type) {
         case 'd': {
+            wstring name;
+            wcout << L"Введіть ім'я: \n";
+            getline(wcin, name);
+
             wstring pin;
             wcout << L"Створіть пін: (Не менше 4х чисел) \n";
-            wcin >> pin;
+            getline(wcin, pin);
 
             // перевірка введення
             if (pin.length() < 4) {
@@ -48,7 +54,7 @@ void AdminCLI::createDoc()
                 return;
             }
 
-            Document doc = Document(-1, date, pin);
+            Document doc = Document(-1, date, pin, name);
             m_documentService.create(doc);
             wcout << L"Документ створений\n";
             break;
@@ -60,10 +66,12 @@ void AdminCLI::createDoc()
             wcout << L"До якого документа прив'язати: \n";
             wcin >> docId;
 
-            wcout << L"Спеціалізація: \n";
-            wcin >> spec;
+            wcin.ignore();
 
-            Certificate cert = Certificate(docId, -1, date, spec);
+            wcout << L"Спеціалізація: \n";
+            getline(wcin, spec);
+
+            Certificate cert = Certificate(-1, docId, date, spec);
             m_certificateService.create(cert);
             wcout << L"Атестат створений\n";
             break;
@@ -74,7 +82,7 @@ void AdminCLI::createDoc()
 void AdminCLI::readDoc()
 {
     wchar_t type;
-    wcout << L"Який документ переглянути? (d, c)\n";
+    wcout << L"Який тип документа переглянути? (d, c)\n";
     wcin >> type;
 
     int id;
@@ -136,7 +144,7 @@ void AdminCLI::deleteDoc()
 {  
     int id; 
     wchar_t type;
-    wcout << L"Який документ видалити? (d, c)\n";
+    wcout << L"Який тип документа видалити? (d, c)\n";
     wcin >> type;
 
     wcout << L"Введіть номер документа: \n";
@@ -171,8 +179,8 @@ void AdminCLI::deleteDoc()
 }
 
 AdminCLI::AdminCLI(
-    DocumentService<Document>& documentService,
-    DocumentService<Certificate>& certificateService
+    DocumentService& documentService,
+    CertificateService& certificateService
     ) : m_documentService(documentService), m_certificateService(certificateService)
 {}
 
@@ -220,10 +228,10 @@ void AdminCLI::action()
                 continue;
             }
             case 11: {
-                m_documentService.create(Document(-1, L"2022-07-15", L"1234"));
-                m_documentService.create(Document(-1, L"2020-03-27", L"4312"));
-                m_documentService.create(Document(-1, L"2024-11-05", L"9645"));
-                m_documentService.create(Document(-1, L"2021-01-19", L"5555"));
+                m_documentService.create(Document(-1, L"2022-07-15", L"1234", L"John Doe"));
+                m_documentService.create(Document(-1, L"2020-03-27", L"4312", L"Jane Doe"));
+                m_documentService.create(Document(-1, L"2024-11-05", L"9645", L"John Smith"));
+                m_documentService.create(Document(-1, L"2021-01-19", L"5555", L"Jane Smith"));
 
                 Certificate* cert = new Certificate(0, 12, L"2027-06-30", L"Computer Engieneer");
                 m_certificateService.create(*cert);

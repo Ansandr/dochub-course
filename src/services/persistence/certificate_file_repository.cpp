@@ -1,44 +1,72 @@
-#include "services/persistence/document_file_repository.hpp"
-#include "document_file_repository.hpp"
+#include "certificate_file_repository.hpp"
+#include "core/domain/document/certificate.hpp"
 
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 
-DocumentFileRepository::DocumentFileRepository(const std::string &fileName)
+using namespace std;
+
+CertificateFileRepository::CertificateFileRepository(const std::string &fileName)
 : fileName(fileName)
 {
     lastId = getLenght();
 }
 
-void DocumentFileRepository::createDocument(Document document) {
+void CertificateFileRepository::createCertificate(Certificate certificate) {
     wofstream outFile(fileName, ios_base::app);
     if (outFile.is_open()) {
-        document.setId(++lastId);
-        outFile << document << L'\n'; //id document
+        certificate.setId(++lastId);
+        outFile << certificate.writeRow() << '\n'; //id certificate
         outFile.close();
         wcout << L"Документ збережений\n";
     }
 }
 
-Document *DocumentFileRepository::readDocument(int id) {
+int CertificateFileRepository::getIdByDoc(int docId) {
     wifstream inFile(fileName);
     if (inFile.is_open()) {
         wstring line;
         while (getline(inFile, line)) {
-            wstring docId;
+            wstring certId;
+            wstring docIdStr;
             wistringstream ss(line);
 
-            getline(ss, docId, L',');
+            getline(ss, certId, L',');
+            getline(ss, docIdStr, L',');
 
-            if(stoi(docId) == id) {
+            if(stoi(docIdStr) == docId) {
+                inFile.close();
+                return stoi(certId);
+            }
+        }
+        inFile.close();
+    }
+    return -1;
+}
+
+Certificate *CertificateFileRepository::readCertificate(int id) {
+    wifstream inFile(fileName);
+    if (inFile.is_open()) {
+        wstring line;
+        while (getline(inFile, line)) {
+            wstring certId;
+            wistringstream ss(line);
+
+            getline(ss, certId, L',');
+
+            if(stoi(certId) == id) {
+                wstring docId;
                 wstring date;
-                wstring pin;
-                wstring name;
-
+                wstring spec;
+                
+                getline(ss, docId, L',');
                 getline(ss, date, L',');
-                getline(ss, pin, L',');
-                getline(ss, name, L',');
+                getline(ss, spec, L',');
 
-                Document* doc = new Document(stoi(docId), date, pin, name);
+                Certificate* doc = new Certificate(stoi(certId), stoi(docId), date, spec);
                 inFile.close();
                 return doc;
             }
@@ -48,7 +76,7 @@ Document *DocumentFileRepository::readDocument(int id) {
     return nullptr;
 }
 
-void DocumentFileRepository::updateDocument(int id, const Document &newDocument) {
+void CertificateFileRepository::updateCertificate(int id, const Certificate &newCertificate) {
     vector<wstring> lines;
     bool found = false;
 
@@ -57,14 +85,14 @@ void DocumentFileRepository::updateDocument(int id, const Document &newDocument)
     if (file.is_open()) {
         wstring line;
         while (getline(file, line)) {
-            wstring docId;
+            wstring certId;
             wistringstream ss(line);
 
-            getline(ss, docId, L',');
+            getline(ss, certId, L',');
 
             wostringstream output_string;
-            if(stoi(docId) == id) { // якщо знайдено айді таке ( число)
-                output_string << newDocument; // переписати стрічку, лишивши айді
+            if(stoi(certId) == id) { // якщо знайдено айді таке ( число)
+                output_string << id << "," << newCertificate; // переписати стрічку, лишивши айді
                 line = output_string.str();
                 found = true;
             }
@@ -76,7 +104,7 @@ void DocumentFileRepository::updateDocument(int id, const Document &newDocument)
 
     // Створюєм тимчасовий файл для перезапису, якщо знайдено
     if (found) {
-        wofstream tempFile("temp.txt");
+        wofstream tempFile("temp.csv");
         if (tempFile.is_open()) {
             for (wstring l : lines) {
                 tempFile << l << "\n";
@@ -84,12 +112,12 @@ void DocumentFileRepository::updateDocument(int id, const Document &newDocument)
             tempFile.close();
 
             remove(fileName.c_str());
-            rename("temp.txt", fileName.c_str());
+            rename("temp.csv", fileName.c_str());
         }
     }
 }
 
-void DocumentFileRepository::deleteDocument(int id) {
+void CertificateFileRepository::deleteCertificate(int id) {
     vector<wstring> lines;
     bool found = false;
 
@@ -128,7 +156,7 @@ void DocumentFileRepository::deleteDocument(int id) {
     }
 }
 
-int DocumentFileRepository::getLenght()
+int CertificateFileRepository::getLenght()
 {
     int lastId = 0;
     wfstream file(fileName);

@@ -10,19 +10,20 @@ static const string dateFormat = "%Y-%m-%d";
 class Document {
 public:
     Document();
-    Document(int id, const wstring& date);
-    Document(int id, const wstring& date, wstring pin);
-
+    Document(int id, wstring date);
+    Document(int id, wstring date, wstring pin, wstring name);
 
     int getId() const;
     wstring getPin() const;
     void setPin(const wstring& newPin);
     void setId(const int newId);
+    void setName(const wstring& newName);
 
     void setDateString(const wstring date);
 
     wstring getDateString() const;
-    time_t getDateTime() const;
+    wstring getName() const;
+
 
     void printInfo() const;
 
@@ -37,4 +38,5 @@ protected:
     int id;
     wstring date;
     wstring pin;
+    wstring name;
 };

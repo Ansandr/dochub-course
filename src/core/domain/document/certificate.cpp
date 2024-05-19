@@ -2,16 +2,22 @@
 
 #include <iostream>
 
-Certificate::Certificate(const int docId, const int certId, const wstring date, const wstring spec)
-    : Document(docId, date)
+Certificate::Certificate() : Document()
 {
-    certificateId = certId;
+    connectedDoc = -1;
+    specification = L"";
+}
+
+Certificate::Certificate(const int certId, const int docId, const wstring date, const wstring spec)
+    : Document(certId, date)
+{
+    connectedDoc = docId;
     specification = spec;
 }
 
-int Certificate::getCertificateId() const
+int Certificate::getConnectedDoc() const
 {
-    return certificateId;
+    return connectedDoc;
 }
 
 wstring Certificate::getSpecitifcation() const
@@ -21,21 +27,21 @@ wstring Certificate::getSpecitifcation() const
 
 void Certificate::printInfo() const
 {
-    wcout << "Атестат:\n";
-    wcout << "id: " << id << "\n";
-    wcout << "Дата випуску: " << date << "\n";
-    wcout << "Спеціальність: " << specification << "\n";
+    wcout << L"Атестат:\n";
+    wcout << L"Спеціальність: " << specification << "\n";
+    wcout << L"Дата випуску: " << date << "\n";
+    wcout << L"Номер: " << id << "\n";
 }
 
 wstring Certificate::writeRow() const
 {
     wstringstream ss;
-    ss << "\t" << getId() << "\t" << getCertificateId() << "\t" << getDateString() << "\t" << getSpecitifcation();
+    ss << getId() << L',' << getConnectedDoc() << L',' << getDateString() << L',' << getSpecitifcation();
     return ss.str();
 }
 
 wostream &operator<<(wostream &os, const Certificate &cert)
 {
-    os << "\t" << cert.getId() << "\t" << cert.getCertificateId() << "\t" << cert.getDateString() << "\t" << cert.getSpecitifcation();
+    os << cert.getId() << L',' << cert.getConnectedDoc() << L',' << cert.getDateString() << L',' << cert.getSpecitifcation();
     return os;
 }

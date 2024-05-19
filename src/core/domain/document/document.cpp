@@ -5,18 +5,22 @@ Document::Document()
 {
     id = -1;
     date = L"0";
-    pin = L"1234";
+    pin = L"0000";
+    name = L"";
 }
 
-Document::Document(int id, const wstring &date)
+Document::Document(int id, wstring date)
 {
     this->id = id;
     this->date = date;
 }
 
-Document::Document(int id, const wstring &date, wstring pin) : Document(id, date)
+Document::Document(int id, wstring date, wstring pin, wstring name)
 {
+    this->id = id;
+    this->date = date;
     this->pin = pin;
+    this->name = name;
 }
 
 int Document::getId() const
@@ -44,16 +48,27 @@ void Document::setId(const int newId)
     this->id = newId;
 }
 
+void Document::setName(const wstring& newName)
+{
+    this->name = newName;
+}
+
 wstring Document::getDateString() const
 {
     return this->date;
 }
 
+wstring Document::getName() const
+{
+    return this->name;
+}
+
 void Document::printInfo() const
 {
-    wcout << "Document:\n";
-    wcout << "id: " << id << "\n";
-    wcout << "date: " << date << "\n";
+    wcout << L"Паспорт:\n";
+    wcout << L"Ім'я: " << name << "\n";
+    wcout << L"Дійсний до: " << date << "\n";
+    wcout << L"Номер: " << id << "\n";
 }
 
 Document &Document::operator=(const Document &obj)
@@ -69,12 +84,12 @@ Document &Document::operator=(const Document &obj)
 wstring Document::writeRow() const
 {
     wstringstream ss;
-    ss << "\t" << getDateString() << "\t" << getPin();
+    ss << getId() << L',' << getDateString() << L',' << getPin() << L',' << getName();
     return ss.str();
 }
 
 wostream &operator<<(wostream &os, const Document &doc)
 {
-    os << "\t" << doc.getDateString() << "\t" << doc.getPin();
+    os << doc.getId() << L',' << doc.getDateString() << L',' << doc.getPin() << L',' << doc.getName();
     return os;
 }

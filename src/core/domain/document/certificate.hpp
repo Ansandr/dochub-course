@@ -8,9 +8,10 @@ using namespace std;
 
 class Certificate : public Document {
 public:
-    Certificate(int docId, int CertId, const wstring date, const wstring spec);
+    Certificate();
+    Certificate(int certId, int docId, const wstring date, const wstring spec);
 
-    int getCertificateId() const;
+    int getConnectedDoc() const;
     wstring getSpecitifcation() const;
 
     void printInfo() const;
@@ -19,6 +20,6 @@ public:
 
     friend wostream& operator<< (wostream& os, const Certificate& doc);
 private:
-    int certificateId;
+    int connectedDoc;
     wstring specification;
 };
